@@ -29,7 +29,7 @@ def write_data(data_list,count):
 	cur_time = datetime.datetime.now().strftime("%d_%m_%Y_%H_%M")
 	with open(f"videos_data/videos_{cur_time}_part_{count}.csv", mode="w", encoding='utf-8') as w_file:
 		file_writer = csv.writer(w_file, delimiter = ",", lineterminator="\r")
-		file_writer.writerow(["Video link", "Views count", "Channel link"])
+		file_writer.writerow(["Video link", "Views count", "Channel link", "subscribers count", "monetization"])
 		file_writer.writerows(data_list)
 
 

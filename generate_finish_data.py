@@ -48,15 +48,27 @@ async def return_finish_data(session, one_list, proxy_auth, cache):
 							count = count[:-1]
 							count = float(count) * 1000000
 						else:
-							count = 0
+							count = int(count)
 					except:
 						count = 0
-				cache[url] = count
+				try:
+					is_monetization = RESULT["responseContext"]["serviceTrackingParams"][0]["params"][3]["value"]
+				except Exception as ex:
+					if str(ex) not in exceptions:
+						exceptions.append(str(ex))
+					is_monetization = "unknown"
+
+					
+				cache[url] = [count, is_monetization]
 				json_dump(cache)
 			else:
-				count = check_channel
+				is_monetization = check_channel[1]
+				count = check_channel[0]
+
 			if count < MAX_SUB_COUNT:
 					print(one_list, count)
+					one_list.append(int(count))
+					one_list.append(is_monetization)
 					finish_data_list.append(one_list)
 
 	except Exception as ex:
@@ -68,6 +80,7 @@ async def return_finish_data(session, one_list, proxy_auth, cache):
 
 async def finish_data(youtube_data):
 	channels_data = json_load()
+	print('длинна кэша: ', len(channels_data))
 	session = aiohttp.ClientSession()
 	proxy_auth = aiohttp.BasicAuth(PROXY_LOGIN, PROXY_PASS)
 	finish_tasks = []

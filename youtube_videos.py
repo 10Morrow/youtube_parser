@@ -38,10 +38,6 @@ async def get_page_data(session, word, mode):
 
 		SECTION_RES = CONTENT_RES['contents'][0]['itemSectionRenderer']
 
-
-		# print(str(len(SECTION_RES['contents'])) + " " + url)
-		# if len(SECTION_RES['contents'])==1:
-		# 	print(SECTION_RES['contents'])
 		for i in range(len(SECTION_RES['contents'])):
 			try:
 				VIDEO_INFO = SECTION_RES['contents'][i]['videoRenderer']

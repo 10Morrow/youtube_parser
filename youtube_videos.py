@@ -6,7 +6,7 @@ import csv
 import asyncio
 import aiohttp
 
-from  config import MIN_VIEW_COUNT
+from config import MIN_VIEW_COUNT, SHORTS
 
 youtube_data = []
 exceptions = []
@@ -44,7 +44,8 @@ async def get_page_data(session, word, mode):
 				video_link_type = VIDEO_INFO['navigationEndpoint']['commandMetadata']['webCommandMetadata']['url']
 				if 'shorts' in video_link_type:
 					shorts_count+=1
-					continue
+					if not SHORTS:
+						continue
 				VIDEO_LINK = 'https://www.youtube.com'+str(video_link_type)
 				try:
 					VIDEO_VIEWS = int(VIDEO_INFO['viewCountText']['simpleText'].split(' ')[0].replace(u'\xa0', u'').replace(',',''))

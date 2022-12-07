@@ -9,6 +9,8 @@ WORDS_FILE = "50K.txt"
 #youtube_videos
 MIN_VIEW_COUNT = 100000
 
+SHORTS = True
+
 #generate_finish_data
 MAX_SUB_COUNT = 20000
 

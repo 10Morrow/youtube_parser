@@ -19,4 +19,4 @@ How to start script? :
 4)install libraries : pip install -r requirements.txt
 5)set up "config.py" for your needs
   YOU HAVE TO WRITE THERE YOUR PROXY DATA.
- 
+6)last step - run async_your_parser.py 

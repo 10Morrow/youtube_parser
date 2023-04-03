@@ -1,4 +1,5 @@
 import requests
+import sys
 from bs4 import BeautifulSoup
 import lxml
 import re
@@ -55,7 +56,10 @@ long video - from 4 to 20 minutes\n\n:"""))
 		if i!=0:
 			list_of_words = word_list[i-PARTS_COUNT:i]
 			print(len(list_of_words))
-			asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+			if sys.platform == 'win32':
+				asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+			else:
+				asyncio.set_event_loop_policy(asyncio.DefaultEventLoopPolicy())
 			relevant_video_data = asyncio.run(gather_data(list_of_words, mode))
 			finish_data_list = asyncio.run(finish_data(relevant_video_data))
 			if finish_data_list:

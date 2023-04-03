@@ -1,0 +1,22 @@
+
+What does this script do? :
+
+-parse youtube videos with parametrs of view count on videos and
+subscribers count on channels from video is.
+-back .csv file with all videos which was allowed by parametrs from "config.py"
+
+How to prepare? :
+
+Script parse videos by words from "50K.txt", you could use another file but change name of file in "config.py"
+
+Unfortunately this script work only with proxy (it should be proxy with USA IP)
+
+How to start script? :
+
+1)git clone https://github.com/10Morrow/youtube_parser.git
+2)cd youtube_parser/
+3)python -m venv venv (you should have venv, or you could install libraries in your global env.)
+4)install libraries : pip install -r requirements.txt
+5)set up "config.py" for your needs
+  YOU HAVE TO WRITE THERE YOUR PROXY DATA.
+ 

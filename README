@@ -1,22 +1,33 @@
 
 What does this script do? :
 
--parse youtube videos with parametrs of view count on videos and
-subscribers count on channels from video is.
--back .csv file with all videos which was allowed by parametrs from "config.py"
+- parse video from youtube. Going through the words from the list,
+and finally filters by the number of views and the number of subscribers
+from the channel where the video was taken from.
+- writes all matching data to a .csv file.
 
 How to prepare? :
+Unfortunately this script work only with proxy (it must be proxy with USA IP)
+So you should buy proxy, and write auth data in ".env" file.
+Example:
+    PROXY_ADDRESS = "IP_ADDRESS:PORT"
+    PROXY_LOGIN = "YOUR_LOGIN"
+    PROXY_PASS = "YOUR_PASSWORD"
 
-Script parse videos by words from "50K.txt", you could use another file but change name of file in "config.py"
+Other setting info you can find in "config.py" file.
+Also you could set up your own setting there.
 
-Unfortunately this script work only with proxy (it should be proxy with USA IP)
 
 How to start script? :
+--------------------------------------------------------------------
+-If you already create ".env" file, and write there your auth data.-
+--------------------------------------------------------------------
+You can start go by this steps:
+1) git clone https://github.com/10Morrow/youtube_parser.git
+2) cd youtube_parser/
+3) python -m venv venv (you should have venv, or you could install libraries in your global env.)
+4) activate your venv : venv/Scripts/activate (for windows) and source venv/bin/activate (for linux)
+5) install libraries : pip install -r requirements.txt
+6) set up "config.py" for your needs
 
-1)git clone https://github.com/10Morrow/youtube_parser.git
-2)cd youtube_parser/
-3)python -m venv venv (you should have venv, or you could install libraries in your global env.)
-4)install libraries : pip install -r requirements.txt
-5)set up "config.py" for your needs
-  YOU HAVE TO WRITE THERE YOUR PROXY DATA.
-6)last step - run async_your_parser.py 
+7) last step - start "run_parser.py" file.

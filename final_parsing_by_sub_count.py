@@ -31,12 +31,12 @@ async def check_list_by_sub_count(session: aiohttp.ClientSession, proxy_auth: ai
 		else:
 			is_monetization = channel_in_cache[1]
 			count = channel_in_cache[0]
+
 			one_list += [count, is_monetization]
 			finish_data_list += one_list
 
-
-
-
+			cache[channel_url] = [count, is_monetization]
+			json_dump(cache)
 
 
 def create_task_for_finish_data(session: aiohttp.ClientSession, proxy_auth,

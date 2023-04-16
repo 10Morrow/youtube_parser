@@ -4,8 +4,8 @@ import asyncio
 from config import PARTS_COUNT, WORDS_FILE, YOUTUBE_FILTERS
 from services import create_word_list, write_data
 
-from youtube_videos import gather_data
-from generate_finish_data import finish_data
+from parsing_by_words_and_views import gather_data
+from final_parsing_by_sub_count import finish_data
 
 
 youtube_data = []
@@ -13,6 +13,8 @@ finish_data_list = []
 
 
 def main():
+	"""start full process of parsing"""
+
 	word_list = create_word_list(WORDS_FILE)
 	mode = int(input("""choose a mode for parsing:
 1.parse today by views a long videos

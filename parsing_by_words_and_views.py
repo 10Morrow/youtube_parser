@@ -1,14 +1,13 @@
 import asyncio
 import aiohttp
 from aiohttp import ClientSession
+from functools import partial
 
 from services import parse_web_page_by_our_settings
-
-
 youtube_data = []
 
 
-async def get_page_data(session, word: str, mode: str) -> None:
+async def get_page_data(session, mode: str, word: str, ) -> None:
 	"""parse data and add to youtube_data list"""
 	global youtube_data
 
@@ -31,7 +30,8 @@ async def gather_data(word_list: list, mode: str) -> list:
 	session = aiohttp.ClientSession()
 
 	try:
-		tasks = list(map(create_task_for_asyncio(session=session, mode=mode), word_list))
+		partial_function = partial(create_task_for_asyncio, session, mode)
+		tasks = list(map(partial_function, word_list))
 		await asyncio.gather(*tasks)
 		await session.close()
 

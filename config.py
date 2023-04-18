@@ -16,7 +16,7 @@ PARTS_COUNT = 5000
 WORDS_FILE = "50K.txt"
 
 # that's a minimum amount of views on video (if vedeo has less views, it won't be parsed)
-MIN_VIEW_COUNT = 100000
+MIN_VIEW_COUNT = 50000
 
 # if you don't want to see "shorts" video in parsed data you should set (False),
 # otherwise "shorts" videos also will be parsed.

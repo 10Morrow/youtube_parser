@@ -36,6 +36,7 @@ long video - from 4 to 20 minutes.\n\n:"""))
 
 		relevant_video_data = asyncio.run(gather_data(part_of_words, mode))
 		if relevant_video_data:
+			logger.info(f"was parsed by views {len(relevant_video_data)}")
 			finished_data_list = asyncio.run(finish_data(relevant_video_data))
 		else:
 			logger.info(f"have no relevant videos from {i-PARTS_COUNT} till {i}")

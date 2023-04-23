@@ -44,12 +44,17 @@ def write_data(data_list: list, count: int) -> None:
         write_data(data_list, count)
 
 
+def saver(data):
+    with open("video_information", "w") as file:
+        json.dump(data, file)
+
+
 def create_word_list(word_file: str) -> list:
     """return list of words from your file with english words"""
     with open(word_file) as file:
         word_list = file.readlines()
     word_list = [line.rstrip() for line in word_list]
-    logger.info(f"was readed {len(word_list)} words")
+    logger.info(f"was read {len(word_list)} words")
     return word_list
 
 
@@ -77,10 +82,20 @@ def parse_web_page_by_our_settings(response_text: str) -> dict:
 
     for i in range(len(result_of_section['contents'])):
         try:
-            if "videoRenderer" in result_of_section['contents'][i]:
-                video_information = result_of_section['contents'][i]['videoRenderer']
+            section_post = result_of_section['contents'][i]
+            if "videoRenderer" in section_post:
+                video_information = section_post['videoRenderer']
+            elif "backgroundPromoRenderer" in section_post:
+                logger.info("No results found on page")
+                return {"success": False}
+            elif "didYouMeanRenderer" in section_post or \
+                    "showingResultsForRenderer" in section_post or \
+                    "infoPanelContainerRenderer" in section_post:
+                return {"success": False}
+            elif "searchPyvRenderer" in section_post:
+                return {"success": False}
             else:
-                logger.info(f"new section parameters {result_of_section['contents'][i].keys()}")
+                logger.info(f"unknown section parameter")
                 continue
             video_link_type = video_information['navigationEndpoint']['commandMetadata']['webCommandMetadata']['url']
 
@@ -92,13 +107,19 @@ def parse_web_page_by_our_settings(response_text: str) -> dict:
             if not SHORTS:
                 continue
 
-        video_link = f"https://www.youtube.com{video_link_type}"
+        video_link = f"https://www.youtube.com{video_link_type.split('&')[0]}"
 
         try:
-            video_views = int(
-                video_information['viewCountText']['simpleText'].split(' ')[0].replace(u'\xa0', u'').replace(',', ''))
-        except ValueError:
-            logger.error("no digit about views")
+            if video_information['viewCountText']['simpleText'] == "No views":
+                video_views = 0
+            else:
+                video_views = int(
+                    video_information['viewCountText']['simpleText'].split(' ')[0].replace(u'\xa0', u'').replace(',', ''))
+        except JSONDecodeError as ex:
+            logger.error(f"json error {ex}")
+            continue
+        except ValueError as ex:
+            logger.error(f"no digit about views {ex}")
             continue
 
         try:
@@ -134,7 +155,7 @@ def parse_data_by_channel_subs(response_text, one_list, cache, channel_url):
     soup = BeautifulSoup(response_text, 'lxml')
     search = soup.find_all("script")
     if not search:
-        logger.error("данные search не были получены")
+        logger.error("search data wasn't received")
         return {"success": False}
 
     try:
@@ -156,7 +177,8 @@ def parse_data_by_channel_subs(response_text, one_list, cache, channel_url):
             count = float(count) * 1000000
         else:
             count = int(count)
-    except KeyError:
+    except KeyError as ex:
+        logger.error(f"sub_count error {ex}")
         count = 0
 
     try:

@@ -11,11 +11,12 @@ logger = get_logger("final_parsing")
 finish_data_list = []
 
 
+
+
 async def check_list_by_sub_count(session: aiohttp.ClientSession, proxy_auth: aiohttp.BasicAuth,
 							cache: dict, one_list: list) -> None:
 	"""check subscribers count on video owner's channel
 	and return this data if count more than MAX_SUB_COUNT (from config.py)"""
-
 	global finish_data_list
 
 	channel_url, video_url = one_list[-1], one_list[0]
@@ -29,7 +30,10 @@ async def check_list_by_sub_count(session: aiohttp.ClientSession, proxy_auth: ai
 									proxy_auth=proxy_auth) as response:
 					response_text = await response.text()
 			except aiohttp.TooManyRedirects:
-				logger.info("too many redirects error")
+				logger.error("too many redirects error")
+				return None
+			except aiohttp.ClientPayloadError:
+				logger.error("Response payload wasn't completed")
 				return None
 			filtered_data = parse_data_by_channel_subs(response_text, one_list, cache, channel_url)
 			if filtered_data["success"]:
@@ -38,8 +42,11 @@ async def check_list_by_sub_count(session: aiohttp.ClientSession, proxy_auth: ai
 			is_monetization = channel_in_cache[1]
 			count = channel_in_cache[0]
 			if count < MAX_SUB_COUNT:
+				logger.info("+1 final data line (from cache)")
 				one_list += [count, is_monetization]
 				finish_data_list.append(one_list)
+	else:
+		logger.info("already in list")
 
 
 def create_task_for_finish_data(session: aiohttp.ClientSession, proxy_auth,

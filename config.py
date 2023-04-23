@@ -6,7 +6,7 @@ load_dotenv()
 # name of file where will be saved channels cache
 JSON_FILE = "channels.json"
 
-# nama of folder where your .csv files will be saved
+# name of folder where your .csv files will be saved
 VIDEO_FOLDER_NAME = "videos_data"
 
 # the size of the part of the list of words by which the list of words will be split
@@ -25,7 +25,7 @@ SHORTS = False
 
 # that's a minimum amount of subscribers on video channel
 # (if video channel has fewer subscribers, it won't be parsed)
-MAX_SUB_COUNT = 20000
+MAX_SUB_COUNT = 10000
 
 # PROXY_ADDRESS, PROXY_LOGIN and PROXY_PASS will be taken from ".env" file.
 PROXY_ADDRESS = os.environ.get("PROXY_ADDRESS")
@@ -42,3 +42,4 @@ YOUTUBE_FILTERS = {
 	"today_by_views_count" : "CAMSBAgCEAE%253D",
 	"week_four_minuts_plus_by_views_count" : "CAMSBAgDGAM%253D",
 }
+

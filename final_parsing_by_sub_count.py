@@ -59,10 +59,13 @@ async def finish_data(youtube_data: list) -> list:
 	"""returns the finished parsing result, which has been filtered by channel subscribers"""
 	cache = json_load()
 	logger.info(f"cache amount is {len(cache)}")
-	session = aiohttp.ClientSession()
-	proxy_auth = aiohttp.BasicAuth(PROXY_LOGIN, PROXY_PASS)
-	partial_function = partial(create_task_for_finish_data, session, proxy_auth, cache)
-	finish_tasks = list(map(partial_function, youtube_data))
-	await asyncio.gather(*finish_tasks)
-	await session.close()
+	try:
+		session = aiohttp.ClientSession()
+		proxy_auth = aiohttp.BasicAuth(PROXY_LOGIN, PROXY_PASS)
+		partial_function = partial(create_task_for_finish_data, session, proxy_auth, cache)
+		finish_tasks = list(map(partial_function, youtube_data))
+		await asyncio.gather(*finish_tasks)
+		await session.close()
+	except aiohttp.client_exceptions.ServerDisconnectedError:
+		await session.close()
 	return finish_data_list
